@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EduSync Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="./style.css" rel="stylesheet" />
+</head>
+
+<div class="modal hidden" id="modal-verify">
+  <div class="modal-content">
+    <h2>Email Verification</h2>
+    <p>We sent a 6-digit code to your email. Please enter it below:</p>
+    <input type="text" id="verify-code" maxlength="6" placeholder="Enter code">
+    <div class="modal-actions">
+      <button class="btn-success" id="verify-submit">Verify</button>
+      <button class="btn-outline" id="verify-cancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<body>
+  <header class="dash-header">
+    
+    <h1 class="dash-title">EduSync</h1>
+
+    <div class="header-right">
+    <div class="top-search hidden" id="notes-search-bar">
+      <input type="text" id="search-notes" placeholder="Search notes..." />
+      <button class="btn-outline" id="search-notes-btn">Search</button>
+    </div>
+
+    <div class="user-chip" id="user-chip">
+      <img id="user-chip-img" scr="./assets/placeholder.png" alt="Profile Picture">
+    </div>
+
+    <button class="hamburger" id="toggle-sidebar">☰</button>
+  </div>
+  </header>
+ 
+  <aside class="sidebar hidden" id="sidebar">
+    <div class="brand">Dashboard</div>
+    <nav class="side-nav">
+      <button class="nav-btn active" data-view="dashboard" data-view-btn>🏠 Home</button>
+      <button class="nav-btn" data-view="notes" data-view-btn>📝 Notes</button>
+      <button class="nav-btn" data-view="study-timer" data-view-btn>⏱️ Study Timer</button>
+      <button class="nav-btn" data-view="calendar" data-view-btn>📅 Calendar</button>
+      <button class="nav-btn" data-view="progress" data-view-btn>📊 Progress</button>
+    </nav>
+    <div class="profile-mini">
+      <div class="sidebar-pfp">
+      <img id="sidebar-pfp-img" src="./assets/placeholder.png" alt="Profile Picture"></div>
+      <div id="profile-mini-name">—</div>
+      <button class="btn-link" id="view-profile">View Profile</button>
+    </div>
+    
+      <button class="btn-outline" id="logout">Log Out</button>
+  </aside>
+
+  <main class="dash-main">
+    <!-- Overview cards -->
+    <section class="view" id="view-dashboard" data-view="dashboard">
+      <div class="grid4">
+        <div class="card card-notes">
+          <h3>Notes</h3>
+          <p>Capture ideas, draft essays, or save quick reminders.</p>
+          <button class="btn-primary" id="add-note">+ Add Note</button>
+        </div>
+        <div class="card card-assignments">
+          <h3>Study Timer</h3>
+          <p>Ready to Focus? Set your timer and start a session</p>
+          <button class="btn-primary" id="add-assignment">↑ Set Timer</button>
+        </div>
+        <div class="card card-calendar">
+          <h3>Calendar</h3>
+          <p>Keep track of classes meetings and important deadlines.</p>
+          <button class="btn-primary" id="add-event">📅 Add Event</button>
+        </div>
+        <div class="card card-groups">
+          <h3>Progress</h3>
+          <p>See how far you've come - track your milestone. </p>
+          <button class="btn-primary" id="add-progress">📊 View Progress</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notes list and editor -->
+    <section class="view hidden" id="view-notes" data-view="notes">
+
+      <div class="editor">
+        <h3>Add a Note</h3>
+      
+        <div class="editor-actions">
+          <button class="btn-success" id="save-note">Save</button>
+          <button class="btn-info" id="share-note">Share</button>
+          <button class="btn-danger" id="delete-note">Delete</button>
+        </div>
+        <label>Title</label>
+        <input type="text" id="note-title" placeholder="Enter note title" />
+       
+        <textarea id="note-content" rows="6" placeholder="Write your note..."></textarea>
+      
+
+
+      </div>
+      
+      <div class="section-header">
+        <h2>My Notes</h2>
+        <div class="user-id" id="user-id-notes">User ID: ...</div>
+        <div class="section-path">
+         
+        </div>
+      </div>
+
+      <div id="notes-list" class="list"></div>
+
+    </section>
+    
+    <section class="view hidden" id="view-note-editor" data-view="note-editor">
+      <div class="editor">
+        <div class="form-actions" style="margin-bottom: 10px;">
+        <button class="btn-link" id="back-to-notes">< My Note</button>
+      </div>
+
+    
+        <h3>Edit Note</h3>
+        <div class="editor-actions">
+          <button class="btn-success" id="save-note-editor">Save</button>
+          <button class="btn-info" id="share-note-editor">Share</button>
+          <button class="btn-danger" id="delete-note-editor">Delete</button>
+        </div>
+
+        <label>Title</label>
+        <input type="text" id="note-title-editor" placeholder="Enter note title" />
+       
+        <label>Content</label>
+        <textarea id="note-content-editor" rows="6" placeholder="Write your note..."></textarea>
+
+       
+      </div>
+    </section>
+
+        
+
+    <section class="view hidden" id="view-study-timer" data-view="study-timer">
+      <h2>STUDY TIMER</h2>
+    
+      <!-- Tabs -->
+      <div class="timer-tabs">
+        <button id="tab-focus" class="active">Focus</button>
+        <button id="tab-break">Short Break</button>
+        <button id="tab-long-break">Long Break</button>
+      </div>
+    
+      <!-- Circle Timer -->
+      <div class="circle-timer">
+        <div id="timer-display">25:00</div>
+        <div id="timer-label">Focus Time</div>
+      </div>
+    
+      <!-- Controls -->
+      <div class="timer-controls">
+        <button id="btn-start" class="btn-green">Start</button>
+        <button id="btn-pause" class="btn-white">Pause</button>
+        <button id="btn-reset" class="btn-white">Reset</button>
+      </div>
+    </section>
+    
+    
+    <!-- calendar (Calendar) -->
+    <section class="view hidden" id="view-calendar" data-view="calendar">
+      <div class="section-header">
+        <h2>Calendar</h2>
+        <div class="section-path">
+          <div class="user-id" id="user-id-calendar">User ID: ...</div>
+        </div>
+      </div>
+
+      <div class="calendar-header">
+        <button class="btn-outline" id="prev-month">‹</button>
+        <h2 id="month-label">calendar</h2>
+        <button class="btn-outline" id="next-month">›</button>
+        <div class="user-id" id="user-id-calendar"></div>
+      </div>
+
+      <div id="calendar" class="calendar"></div>
+
+      <div class="calendar-actions">
+        <button class="btn-success" id="add-event2">+ Add Event</button>
+        <button class="btn-danger" id="export-pdf">Export PDF</button>
+      </div>
+
+      <div id="events-list" class="list slim"></div>
+    </section>
+
+    <section class="view hidden" id="view-progress" data-view="progress">
+  <h2>YOUR PROGRESS</h2>
+
+  <div class="progress-container">
+    <!-- Left: Circular Progress -->
+    <div class="progress-circle">
+      <svg viewBox="0 0 36 36" class="circular-chart">
+        <path class="circle-bg"
+              d="M18 2.0845
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+        <path class="circle"
+              stroke-dasharray="75, 100"
+              d="M18 2.0845
+                 a 15.9155 15.9155 0 0 1 0 31.831
+                 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+        <text x="18" y="20.35" class="percentage">75%</text>
+      </svg>
+      <p>Weekly Tasks Done<br>On Track 90%</p>
+    </div>
+
+    <!-- Right: Daily Stats -->
+    <div class="progress-details">
+      <h3 class="daily-label">DAILY</h3>
+      <p>Completed 15/20 tasks</p>
+      <p>Avg Study 2.3 hrs daily</p>
+
+      <!-- Bar Graph -->
+      <div class="progress-daily">
+        <div class="bar-graph">
+          <div class="bar" style="height: 60%"></div>
+          <div class="bar" style="height: 80%"></div>
+          <div class="bar" style="height: 40%"></div>
+          <div class="bar" style="height: 90%"></div>
+        </div>
+        <div class="bar-labels">
+          <span>1</span><span>2</span><span>3</span><span>4</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+      
+
+    <!-- Account settings -->
+    <section class="view hidden" id="view-profile" data-view="profile">
+      <div class="profile-card">
+        <div class="user-id" id="user-id-profile"></div>
+        <h2>Account Settings</h2>
+
+      <div class="profile-pic-upload">
+        <label for="profile-upload" class="circle-upload">
+          <img id="profile-preview" src="./assets/placeholder.png" alt="Profile Picture">
+        </label>
+        <input type="file" id="profile-upload" accept="image/*" hidden>
+      </div>
+
+      <div class="form">
+        <label>Full Name</label>
+        <input type="text" id="profile-name" />
+        <label>Email Address</label>
+        <input type="email" id="profile-email" />
+        <label>Student ID</label>
+        <input type="text" id="profile-student" />
+        <label>Program</label>
+        <input type="text" id="profile-program" placeholder="Unassigned Program" />
+        <div class="form-actions">
+          <button class="btn-info" id="change-password">Change Password</button>
+          <button class="btn-outline" id="cancel-changes">Cancel</button>
+          <button class="btn-success" id="save-changes">Save Changes</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="view hidden" id="view-edit-profile" data-view="edit-profile">
+      <!-- edit form with Save/Cancel + password-->
+    </section>
+  </main>
+
+  <!-- Share dialog -->
+  <div class="modal" id="modal-share">
+    <div class="modal-content">
+      <h3>Share notes</h3>
+      <div class="share-options">
+        <button class="btn-outline" data-share="text">Share as text</button>
+        <button class="btn-outline" data-share="image">Share as image</button>
+        <button class="btn-outline" data-share="word">Share as Word file</button>
+        <button class="btn-link" id="share-cancel">Cancel</button>
+      </div>
+      <div class="share-targets" id="share-targets"></div>
+    </div>
+  </div>
+
+  <!-- Success layer -->
+  <div class="layer" id="layer-success">
+    <div class="layer-content">
+      <h3 class="layer-title">Success</h3>
+      <p>Success! Your notes have been successfully saved.</p>
+      <div class="form-actions">
+        <button class="btn-outline" id="success-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete confirm layer -->
+  <div class="layer" id="layer-delete">
+    <div class="layer-content">
+      <h3 class="layer-title">Delete this note?</h3>
+      <p>This note will be permanently deleted from the device. Deleted items are kept in recently deleted for 30 days.</p>
+      <div class="form-actions">
+        <button class="btn-outline" id="delete-cancel">Cancel</button>
+        <button class="btn-danger" id="delete-confirm">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile layer -->
+  <div class="layer" id="layer-profile">
+    <div class="layer-content" style="width:520px">
+      <h3 class="layer-title">Account Settings</h3>
+      <div class="user-id" id="user-id-profile-layer"></div>
+  
+      <!-- Read-only profile info -->
+      <div id="profile-readonly">
+        <div class="profile-header">
+          <div class="profile-pic">
+            <img id="profile-img-layer" src="./assets/placeholder.png" alt="Profile Picture">
+          </div>
+          <div class="profile-info">
+            <h4 id="profile-display-name-layer">New User</h4>
+            <p id="profile-display-program-layer">Unassigned Program</p>
+          </div>
+        </div>
+  
+        <p><strong>Email:</strong> <span id="profile-display-email-layer">example@gmail.com</span></p>
+        <p><strong>Student ID:</strong> <span id="profile-display-student-layer">S1121</span></p>
+  
+        <div class="form-actions">
+          <button class="btn-info" id="edit-profile">Edit Profile</button>
+          <button class="btn-outline" id="close-profile-layer">Close</button>
+        </div>
+      </div>
+  
+      <!-- Editable form -->
+      <div id="profile-edit" class="hidden">
+        <div class="profile-pic-upload">
+          <label for="profile-upload-layer" class="circle-upload">
+            <img id="profile-preview-layer" src="./assets/placeholder.png" alt="Profile Picture">
+          </label>
+          <input type="file" id="profile-upload-layer" accept="image/*" hidden>
+        </div>
+  
+        <form class="form" id="edit-profile-form">
+          <label>Full Name</label>
+          <input type="text" id="profile-name-layer" />
+  
+          <label>Email Address</label>
+          <input type="email" id="profile-email-layer" />
+  
+          <label>Student ID</label>
+          <input type="text" id="profile-student-layer" />
+  
+          <div class="form-actions">
+            <button class="btn-info" id="change-password-layer">Change Password</button>
+            <button class="btn-outline" id="cancel-edit-layer">Cancel</button>
+            <button class="btn-success" id="save-profile-layer">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Resubmit layer -->
+  <div class="layer" id="layer-resubmit">
+    <div class="layer-content" style="width:520px">
+      <h3 class="layer-title">Resubmit Assignment</h3>
+      <label>Description / Notes</label>
+      <textarea id="resubmit-desc" rows="3" placeholder="Update your notes..."></textarea>
+      <label>File Upload (Simulated)</label>
+      <input type="file" id="resubmit-file" />
+      <div class="note">Current status: <strong id="resubmit-status">Resubmitted</strong></div>
+      <div class="form-actions">
+        <button class="btn-info" id="do-resubmit">Resubmit</button>
+        <button class="btn-outline" id="close-resubmit-layer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submissions layer -->
+  <div class="layer" id="layer-submissions">
+    <div class="layer-content" style="width:640px">
+      <h3 class="layer-title">Your submissions</h3>
+      <div id="submissions-list" class="list"></div>
+      <div class="form-actions">
+        <button class="btn-outline" id="close-submissions-layer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes index layer -->
+  <div class="layer" id="layer-notes-index">
+    <div class="layer-content" style="width:640px">
+      <h3 class="layer-title">All Notes</h3>
+      <div id="notes-index-list" class="list slim"></div>
+      <div class="form-actions">
+        <button class="btn-outline" id="close-notes-layer">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

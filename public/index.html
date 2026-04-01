@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EduSync</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="./style.css" rel="stylesheet" />
+  </head>
+  <body>
+  <header class="site-header">
+  <div class="brand">
+  <span class="edu-word">Edu</span><span
+  class="sync-word">Sync<span>
+  </div>
+  <nav class="nav">
+   <a href="#home">Home</a>
+   <a href="#about">About</a>
+   <a href="#features">Features</a>
+   </nav>
+  <div class="auth-links">
+    <button class="btn-outline" id="btn-login-open">Log in</button>
+    <button class="btn-primary" id="btn-register-open">Register</button>
+    </div>
+    </header>
+  
+  <main>
+  <section id="home" class="hero">
+   <div class="hero-text">
+  
+ <h1 class=hero-title>
+  <span class="welcome">Welcome</span> to <span class="edu">Edu</span><span class="sync">Sync!!!</span>
+  </h1>
+  <p>Track task, visualize schedule, manage study time, and monitor your progress-all in one intuitive platform built for students success.</p>
+ <div class="hero-actions">
+ <button class="btn-primary" id="btn-get-started">Get Started</button>
+ </div>
+ </div>
+  
+ <div class="hero-visual">
+ <div class="card illustration">
+  <div class="lamp"></div>
+   <img src="./assets/placeholder.png" alt="Study setup" />
+   <div class="calendar-mini">2026</div>
+   </div>
+  </div>
+   </section>
+  
+   <section id="about" class="section">
+  <div class="about-box">
+  <h2 class="about-title">
+  <span class="about-welcome">About</span>
+  <span class="about-edu">Edu</span><span class="about-sync">Sync</span>
+  </h2>
+  <p class="about-description">
+  EduSync is a user-friendly Learning Management System (LMS) created to help students organize and manage their school work in one place. It brings together all the essential tools you need to succeed academically.
+  </p>
+   <p class="about-quote"> 
+  "It allows users to manage a Track List with due dates, visualize workloads through a Schedule Viewer, utilized an integrated Study Time for focused sessions, and monitor performance via Simple Progress tracking — all within a simple, accessible platform designed for modern student life."
+   </p>
+   </div>
+   </section>
+  
+   <section class="features">
+   <h2 class="features-heading">Features</h2>
+   <div class="features-grid">
+   <div class="feature-card notes">
+<span class="icon">📝</span>
+ <h3>Notes</h3>
+   <p>Capture ideas, draft essays, or save quick reminders.</p>
+   </div>
+   <div class="feature-card assignment">
+   <span class="icon">📚</span>
+  <h3>Study Timer</h3>
+  <p>Ready to Focus? Set your timer and start a session.</p>
+   </div>
+<div class="feature-card calendar">
+<span class="icon">📅</span>
+
+ <h3>Calendar</h3>
+   <p>Keep track of classes, meetings, and deadlines.</p>
+   </div>
+   <div class="feature-card group">
+   <span class="icon">👥</span>
+   <h3>Progress</h3>
+   <p>See how far you've come - track your milestone.</p>
+   </div>
+   <div class="feature-card profile">
+   <span class="icon">👤</span>
+   <h3>Profile</h3>
+   <p>Update your account settings, preferences, and personal info.</p>
+   </div>
+   </div>
+  </section>
+  
+   <footer class="site-footer">
+   <div class="brand">
+ <span class="edu-word">Edu</span><span
+  class="sync-word">Sync<span>
+  </div>
+  <nav class="nav">
+  <a href="#home">Home</a>
+  <a href="#about">About</a>
+  <a href="#features">Features</a>
+   </nav>
+  <div>© 2025 EduSync. All rights reserved. Developed by passionate Bachelor of Science in Computer Science students.</div>
+ </footer>
+ </main>
+  
+  <!-- Login layer -->
+  <div class="layer" id="layer-login">
+ <div class="layer-content">
+   <h3 class="layer-title">Sign In</h3>
+   <form id="form-login" class="form">
+   <label>Email Address</label>
+   <input type="email" name="email" placeholder="you@gmail.com" required />
+  <label>Password</label>
+   <input type="password" name="password" placeholder="••••••••" required />
+   <div class="form-actions">
+  <button class="btn-primary" type="submit">Sign In</button>
+   <button class="btn-link" type="button" id="forgot">Forgot Password?</button>
+   </div>
+   </form>
+   <div class="modal-footer">
+   <span>New user?</span>
+  <button class="btn-outline" id="switch-to-register">Register</button>
+   </div>
+  <button class="layer-close" data-close="login">✕</button>
+   </div>
+  </div>
+  
+  <!-- Register layer -->
+  <div class="layer" id="layer-register">
+   <div class="layer-content">
+   <h3 class="layer-title">Sign Up</h3>
+   <form id="form-register" class="form">
+   <label>Name</label>
+  <input type="text" name="name" placeholder="Full Name" required />
+   <label>Username</label>
+   <input type="text" name="username" placeholder="Username" required />
+   <label>Email Address</label>
+   <input type="email" name="email" placeholder="Email" required />
+   <label>Password</label>
+  <input type="password" name="password" placeholder="••••••••" required />
+  <div class="checkbox">
+   <input type="checkbox" id="agree" required />
+   <label for="agree">I agree with Terms & Conditions</label>
+  </div>
+  <div class="form-actions">
+   <button class="btn-primary" type="submit">Create Account</button>
+   </div>
+   </form>
+   <div class="modal-footer">
+   <span>Already have account?</span>
+   <button class="btn-outline" id="switch-to-login">Log In</button>
+   </div>
+   <button class="layer-close" data-close="register">✕</button>
+   </div>
+  </div>
+  
+  <script src="./app.js"></script>
+  <script src="./app.js"></script>
+  </body>
+  </html>
+  
+  
+  
+
+  
+  
+  
+  
+  
