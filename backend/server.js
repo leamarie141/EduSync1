@@ -365,6 +365,6 @@ app.get("/", (req, res) => {
 
 // --- Start server ---
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () =>
-  console.log(`EduSync server running on http://localhost:${PORT}`)
-);
+app.listen(PORT, () => { 
+  console.log(`EduSync server running on ${PORT}`);
+});
