@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+const cors = require("cors");
 
 const app = express();
 
@@ -19,6 +20,10 @@ app.use(
     cookie: { httpOnly: true },
   })
 );
+app.use(cors({
+  origin: "https://edu-sync1-alpha.vercel.app/",
+  credentials: true
+}));
 
 // In-memory storage
 const users = {}; // userId -> { id, name, username, email, passwordHash, studentId, program, createdAt }
