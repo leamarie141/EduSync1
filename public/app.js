@@ -2,7 +2,7 @@
 let cachedNotes = [];
 const qs = (sel) => document.querySelector(sel);
 const qsa = (sel) => Array.from(document.querySelectorAll(sel));
-const API_BASE = "https://edusync1-production.up.railway.app"
+const API_BASE = "https://edusync1-production.up.railway.app";
 
 const api = {
   get: (url) =>
