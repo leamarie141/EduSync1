@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // --- Session setup ---
 app.use(
   session({
-    secret: "edusync-secret",
+    secret: process.env.SESSION_SECRET || "fallback-secret",
     resave: false,
     saveUninitialized: false,
     cookie: { httpOnly: true },
