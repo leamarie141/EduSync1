@@ -2,24 +2,25 @@
 let cachedNotes = [];
 const qs = (sel) => document.querySelector(sel);
 const qsa = (sel) => Array.from(document.querySelectorAll(sel));
+const API_BASE = "https://edusync1-production.up.railway.app"
 
 const api = {
   get: (url) =>
-    fetch(url).then((r) => {
+    fetch(API_BASE + url).then((r) => {
       if (!r.ok) throw new Error(r.statusText);
       return r.json();
     }),
   post: (url, body) =>
-    fetch(url, {
+    fetch(API_BASE + url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     }).then((r) => {
       if (!r.ok) throw new Error(r.statusText);
-      return r.json();
+      return r.json(); 
     }),
   put: (url, body) =>
-    fetch(url, {
+    fetch(API_BASE + url, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -28,7 +29,7 @@ const api = {
       return r.json();
     }),
   del: (url) =>
-    fetch(url, { method: "DELETE" }).then((r) => {
+    fetch(API_BASE + url, { method: "DELETE" }).then((r) => {
       if (!r.ok) throw new Error(r.statusText);
       return r.json();
     }),
