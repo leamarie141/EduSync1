@@ -129,17 +129,20 @@ function initLanding() {
 
 /* Dashboard logic */
 async function initDashboard() {
+  
+  let me = await api.get("/api/user/me").catch(() => null);
+  if (!me || !me.userId) {
+    alert("Please log in first.");
+    location.href = "/";
+    return;
+  }
+
   const sidebar = qs("#sidebar");
   qs("#toggle-sidebar")?.addEventListener("click", () => {
     sidebar.classList.toggle("hidden");
   });
 
-let me = await api.get("/api/user/me").catch(() => null);
-if (!me || !me.userId) {
-  alert("Please log in first.");
-  location.href = "/";
-  return;
-}
+
   // UI bindings
   qs("#user-chip").textContent = me.username || me.name;
   qs("#profile-mini-name").textContent = me.name;
