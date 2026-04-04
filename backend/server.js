@@ -103,19 +103,21 @@ app.post("/api/auth/register", async (req, res) => {
     },
   };
 
-  try {
-    await transporter.sendMail({
-      from: "your-email@gmail.com",
-      to: email,
-      subject: "EduSync Email Verification",
-      text: `Your verification code is: ${verificationCode}`
-    });
-  } catch (err) {
-    console.error("Error sending email:", err);
-    return res.status(500).json({ error: "Failed to send verification email"});
-  }
+  //try {
+    //await transporter.sendMail({
+      //from: "your-email@gmail.com",
+      //to: email,
+      //subject: "EduSync Email Verification",
+      //text: `Your verification code is: ${verificationCode}`
+    //});
+  //} catch (err) {
+    //console.error("Error sending email:", err);
+    //return res.status(500).json({ error: "Failed to send verification email"});
+  //}
+  users[id].verified = true;
+  delete users[id].verificationCode;
 
-  res.json({ success: true, message: "Registered. Please verify your email." });
+  res.json({ success: true, message: "Registered successfully (email verification disabled)." });
 });
 
 app.post("/api/auth/verify", (req, res) => {

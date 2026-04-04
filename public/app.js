@@ -105,7 +105,8 @@ function initLanding() {
       .catch((err) => ({ error: err.message }));
     if (res.error) return alert(res.error);
 
-    qs("#modal-verify").classList.remove("hidden");
+    location.href = "/app";
+    //qs("#modal-verify").classList.remove("hidden");
   });
 
   qs("#verify-submit")?.addEventListener("click", async () => {
