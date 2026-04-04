@@ -17,11 +17,16 @@ app.use(
     secret: process.env.SESSION_SECRET || "fallback-secret",
     resave: false,
     saveUninitialized: false,
-    cookie: { httpOnly: true },
+    cookie: { 
+      httpOnly: true,
+      secure: true,
+      sameSite: "none"
+     },
   })
 );
+
 app.use(cors({
-  origin: "https://edu-sync1-alpha.vercel.app/",
+  origin: "https://edusync-s4z1.onrender.com",
   credentials: true
 }));
 
