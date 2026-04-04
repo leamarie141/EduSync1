@@ -6,7 +6,8 @@ const API_BASE = "https://edusync-s4z1.onrender.com";
 
 const api = {
   get: (url) =>
-    fetch(API_BASE + url).then((r) => {
+    fetch(API_BASE + url, {  credentials: "include" })
+    .then((r) => {
       if (!r.ok) throw new Error(r.statusText);
       return r.json();
     }),
@@ -15,6 +16,7 @@ const api = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
+      credentials: "include"
     }).then((r) => {
       if (!r.ok) throw new Error(r.statusText);
       return r.json(); 
@@ -24,12 +26,13 @@ const api = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
+      credentials: "include"
     }).then((r) => {
       if (!r.ok) throw new Error(r.statusText);
       return r.json();
     }),
   del: (url) =>
-    fetch(API_BASE + url, { method: "DELETE" }).then((r) => {
+    fetch(API_BASE + url, { method: "DELETE",  credentials: "include" }).then((r) => {
       if (!r.ok) throw new Error(r.statusText);
       return r.json();
     }),
@@ -101,7 +104,6 @@ function initLanding() {
       })
       .catch((err) => ({ error: err.message }));
     if (res.error) return alert(res.error);
-    location.href = "/app";
     qs("#modal-verify").classList.remove("hidden");
   });
 
@@ -132,7 +134,7 @@ async function initDashboard() {
 
 
   // UI bindings
-  qs("#user-chip").textContent = me.name;
+  qs("#user-chip").textContent = me.username || me.name;
   qs("#profile-mini-name").textContent = me.name;
 
   qsa(".nav-btn").forEach((btn) =>
