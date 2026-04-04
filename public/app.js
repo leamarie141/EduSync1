@@ -95,7 +95,7 @@ function initLanding() {
     const form = new FormData(e.target);
     if (!qs("#agree").checked) return alert("Please agree to Terms & Conditions");
     const res = await api
-      .post("/api/auth/register", {
+    .post("/api/auth/register", {
         name: form.get("name"),
         username: form.get("username"),
         email: form.get("email"),
@@ -104,6 +104,7 @@ function initLanding() {
       })
       .catch((err) => ({ error: err.message }));
     if (res.error) return alert(res.error);
+
     qs("#modal-verify").classList.remove("hidden");
   });
 
@@ -132,7 +133,12 @@ async function initDashboard() {
     sidebar.classList.toggle("hidden");
   });
 
-
+let me = await api.get("/api/user/me").catch(() => null);
+if (!me || !me.userId) {
+  alert("Please log in first.");
+  location.href = "/";
+  return;
+}
   // UI bindings
   qs("#user-chip").textContent = me.username || me.name;
   qs("#profile-mini-name").textContent = me.name;
