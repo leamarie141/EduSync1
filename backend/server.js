@@ -1,6 +1,5 @@
 const express = require("express");
 const session = require("express-session");
-const MongoStore = require("connect-mongo"); 
 const bodyParser = require("body-parser");
 const path = require("path");
 const crypto = require("crypto");
@@ -76,18 +75,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // --- Session setup ---
 
-app.use(session({
+app.use(
+  session({
     secret: process.env.SESSION_SECRET || "fallback-secret",
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
-      collectionName: "sessions"
-    }),
     cookie: {
       httpOnly: true,
-      secure:  process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+      secure:  false,
+      sameSite: "lax"
     },
   })
 );
