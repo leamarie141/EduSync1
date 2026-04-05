@@ -1,12 +1,13 @@
 const express = require("express");
 const session = require("express-session");
+const MongoStore = require("connect-mongo"); 
 const bodyParser = require("body-parser");
 const path = require("path");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const MongoStore = require("connect-mongo"); 
+
 
 mongoose.connect(process.env.MONGO_URI, {
 }).then(() => console.log("MongoDB connected"))
@@ -75,8 +76,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // --- Session setup ---
 
-app.use(
-  session({
+app.use(session({
     secret: process.env.SESSION_SECRET || "fallback-secret",
     resave: false,
     saveUninitialized: false,
