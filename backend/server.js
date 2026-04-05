@@ -73,15 +73,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // --- Session setup ---
+const MongoStore = require("connect-mongo");
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "fallback-secret",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: "sessions"
+    }),
     cookie: {
       httpOnly: true,
-      secure: true,
-      sameSite: "none"
+      secure:  process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
     },
   })
 );
