@@ -772,11 +772,3 @@ function switchView(viewName, btn) {
 
 
 
-
-
-
-
-
-
-
-
