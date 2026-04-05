@@ -114,6 +114,152 @@ function requireAuth(req, res, next) {
 }
 
 // --- API routes ---
+function hash(str) {
+  return crypto.createHash("sha256").update(str).digest("hex");
+}
+
+function makeUserId() {
+  // 17-digit-like ID
+  return String(Math.floor(Math.random() * 9e16 + 1e16));
+}
+
+
+// --- Auth gate ---
+function requireAuth(req, res, next) {
+  if (!req.session.userId) {
+    return res.status(401).json({ error: "Not logged in" });
+  }
+  next();
+}
+
+// --- API routes ---
+// Auth
+app.post("/api/auth/register", async (req, res) => {
+  const { name, username, email, password, studentId } = req.body;
+  if (!name || !username || !email || !password) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+  const existing = await User.findOne({ $or: [{ email }, { username }] }); 
+  if (existing) return res.status(409).json({ error: "User already exists" });
+
+  const user = new User ({
+    name,
+    username,
+    email,
+    studentId: studentId || "S1121",
+    passwordHash: hash(password),
+    program: "Unassigned Program",
+    createdAt: new Date().toISOString(),
+    verified: true,
+    profile: {
+      fullName: name,
+      email,
+      studentId: studentId || "S1121",
+      program: "Unassigned Program",
+    }
+  });
+
+  await user.save();
+
+  req.session.userId = user._id;
+
+  res.json({ success: true, message: "Registered successfully." });
+});
+
+app.post("/api/auth/verify", async(req, res) => {
+  const { email, code } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) return res.status(400).json({ error: "User not found" });
+  if (user.verificationCode !== code) return res.status(400).json({ error: "Invalid code" });
+
+  user.verified = true;
+  delete user.verificationCode;
+
+  res.json({ success: true, message: "Email verified successfully!" });
+});
+
+app.post("/api/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+
+try {
+  const user = await User.findOne({ email });
+  if (!user || user.passwordHash !== hash(password)) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+  if (!user.verified) {
+    return res.status(403).json({ error: "Please verify your email before logging in."});
+  }
+  req.session.userId = user._id;
+  res.json({ userId: user._id, name: user.name, email: user.email });
+} catch (err) {
+  console.error("Login error:", err);
+  res.status(500).json({ error: "Server error during login"});
+}
+});
+
+
+app.post("/api/auth/logout", (req, res) => {
+  req.session.destroy(() => res.json({ ok: true }));
+});
+
+app.get("/api/user/me", requireAuth, async (req, res) => {
+  const user = await User.findById(req.session.userId);
+  if (!user) return res.status(404).json({ error: "User not found"});
+    res.json({
+    userId: user._id,
+    name: user.name,
+    email: user.email,
+    studentId: user.studentId,
+    program: user.program,
+  });
+});
+
+// Profile
+app.get("/api/profile", requireAuth, (req, res) => {
+  console.log("Profile route hit, userId:", req.session.userId);
+  const id = req.session.userId;
+  if (!data[id] || !data[id].profile) {
+    return res.status(404).json({ error: "No profile for user" });
+  }
+  res.json(data[id].profile);
+});
+
+app.put("/api/profile", requireAuth, (req, res) => {
+  const { fullName, email, studentId, program } = req.body;
+  const id = req.session.userId;
+
+  if (fullName) users[id].name = fullName;
+  if (email) users[id].email = email;
+  if (studentId) users[id].studentId = studentId;
+  if (program) users[id].program = program;
+
+  data[id].profile = {
+    fullName: users[id].name,
+    email: users[id].email,
+    studentId: users[id].studentId,
+    program: users[id].program,
+  };
+
+  res.json(data[id].profile);
+});
+
+app.post("/api/profile/change-password", requireAuth, (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const id = req.session.userId;
+  if (users[id].passwordHash !== hash(oldPassword)) {
+    return res.status(400).json({ error: "Old password incorrect" });
+  }
+  users[id].passwordHash = hash(newPassword);
+  res.json({ ok: true });
+});
+
+// Update password
+app.put("/api/profile/password", (req, res) => {
+  const { password } = req.body;
+  // TODO: hash + save password
+  res.json({ success: true });
+});
 
 // Register/Login/Logout/User/Profile routes (already shown above)...
 
